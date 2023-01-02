@@ -6,13 +6,8 @@ class HashTable {
     int itemCounter;
     int size;
     double loadFactor;
-
-    class Node;
     
-    Node* table;
-
     public:
-
     class Node {
         public:
         T* data;
@@ -22,6 +17,8 @@ class HashTable {
             this->next = next;
         }
     };
+
+    Node** table;
 
     HashTable(){
         this->itemCounter = 0;
@@ -34,6 +31,18 @@ class HashTable {
     }
 
     ~HashTable(){
+        Node* node;
+        Node* tempNode;
+        for(int i = 0; i < this->size; i++){
+            node = this->table[i];
+            while(node != nullptr){
+                tempNode = node;
+                node = node->next;
+                delete tempNode->data;
+                delete tempNode;
+            }
+        }
+        delete[] this->table;
     }
 
     void insert(T* item){
@@ -63,7 +72,6 @@ class HashTable {
         Node* tempNode;
         for(int i = 0; i < this->size/2; i++){
             node = this->table[i];
-            tempNode;
             while(node != nullptr){
                 hashRes = hash(node->data);
                 Node* newNode = new Node(node->data, newTable[hashRes]);
@@ -105,7 +113,7 @@ class HashTable {
         Node* node = this->table[hashRes];
         while(node != nullptr){
             if(node->data->getId() == item->getId()){
-                return Node->data;
+                return node->data;
             }
             node = node->next;
         }

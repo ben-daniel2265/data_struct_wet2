@@ -3,7 +3,7 @@
 
 #include "Player.h"
 
-Player::Player(int playerId, int gamesPlayed, int ability, int cards, bool goalKeeper, const permutation_t* spirit) {
+Player::Player(int playerId, int gamesPlayed, int ability, int cards, bool goalKeeper, permutation_t spirit) {
     this->playerId = playerId;
     this->gamesPlayed = gamesPlayed;
     this->ability = ability;
@@ -12,7 +12,7 @@ Player::Player(int playerId, int gamesPlayed, int ability, int cards, bool goalK
     this->daddy = nullptr;
     this->captain = false;
     this->team = nullptr;
-    this->spirit = spirit;
+    this->spirit = new permutation_t(spirit);
     this->spiritExtra = new permutation_t();
 }
 

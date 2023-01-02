@@ -60,6 +60,10 @@ class RankAVLTree {
         this->root = remove(this->root, value, cmp_func);
     }
 
+    T* searchValue(int rank){
+        return search(this->root, rank + 1);
+    }
+
     Node* findValue(T* value, int(*cmp_func)(T* t1, T* t2)){
         return find(root, value, cmp_func);
     }

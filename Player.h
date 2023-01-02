@@ -12,7 +12,6 @@ class Player {
     int cards;
     bool goalKeeper;
 
-
     Player* daddy;
 
     bool captain;
@@ -22,7 +21,7 @@ class Player {
     permutation_t* spiritExtra;
 
     public:
-        Player(int playerId, int gamesPlayed, int ability, int cards, bool goalKeeper, const permutation_t* spirit);
+        Player(int playerId, int gamesPlayed, int ability, int cards, bool goalKeeper, permutation_t spirit);
         ~Player();
         int getId();
         int getGamesPlayed();

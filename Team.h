@@ -2,6 +2,7 @@
 #define TEAM_H
 
 #include "Player.h"
+#include "wet2util.h"
 class Player;
 
 

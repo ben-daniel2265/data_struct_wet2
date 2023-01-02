@@ -8,9 +8,10 @@ Team::Team(int teamId) {
     this->teamId = teamId;
     this->teamPoints = 0;
     this->playersCount = 0;
+    this->teamAbility = 0;
     this->goalKeeper = false;
     this->captain = nullptr;
-    this->teamSpirit = new permutation_t();
+    this->teamSpirit = new permutation_t(permutation_t::neutral());
 }
 
 Team::~Team() {
