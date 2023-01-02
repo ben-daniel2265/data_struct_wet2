@@ -46,6 +46,7 @@ permutation_t* Team::getTeamSpirit() {
     return this->teamSpirit;
 }
 
+
 void Team::setTeamId(int teamId) {
     this->teamId = teamId;
 }

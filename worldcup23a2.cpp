@@ -15,14 +15,13 @@ world_cup_t::world_cup_t()
 {
 	this->teamTreeByAbility = new RankAVLTree<Team>();
 	this->teamTreeById = new RankAVLTree<Team>();
-	this->teamTable = new HashTable<Team>();
 	this->players = new HashTable<Player>();
 }
 
 world_cup_t::~world_cup_t()
 {
-	delete this->teamTable;
 	delete this->players;
+	this->teamTreeById->delete_values();
 	this->teamTreeByAbility->delete_hollow_tree();
 	this->teamTreeById->delete_hollow_tree();
 	delete this->teamTreeByAbility;
@@ -44,7 +43,6 @@ StatusType world_cup_t::add_team(int teamId)
 
 	this->teamTreeById->insertValue(newTeam, compare_team_by_id);
 	this->teamTreeByAbility->insertValue(newTeam, compareTeamsByAbility);
-	this->teamTable->insert(newTeam);
 
 	return StatusType::SUCCESS;
 }
@@ -73,7 +71,7 @@ StatusType world_cup_t::remove_team(int teamId)
 		tempTeam->getCaptain()->setTeam(nullptr);
 	}
 
-	this->teamTable->remove(tempTeam);
+	delete tempTeam;
 
 	return StatusType::SUCCESS;
 }
@@ -87,12 +85,12 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 	}
 
 	Team* tempTeam = new Team(teamId);
-	Team* teamToAdd = this->teamTable->search(tempTeam);
-	if(teamToAdd == nullptr){
-		delete tempTeam;
+	RankAVLTree<Team>::Node* tempNode = this->teamTreeById->findValue(tempTeam, compare_team_by_id);
+	delete tempTeam;
+	if(tempNode == nullptr){
 		return StatusType::FAILURE;
 	}
-	delete tempTeam;
+	Team* teamToAdd = tempNode->value;
 
 	Player* newPlayer = new Player(playerId, gamesPlayed, ability, cards, goalKeeper, spirit);
 
@@ -396,7 +394,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 		tempTeam1->getCaptain()->setTeam(tempTeam1);
 		
 		this->teamTreeById->removeValue(tempTeam2, compare_team_by_id);
-		this->teamTable->remove(tempTeam2);
+		delete tempTeam2;
 		this->teamTreeByAbility->insertValue(tempTeam1, compareTeamsByAbility);
 	
 		return StatusType::SUCCESS;
@@ -425,7 +423,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 		
 		this->teamTreeByAbility->insertValue(tempTeam1, compareTeamsByAbility);
 		this->teamTreeById->removeValue(tempTeam2, compare_team_by_id);
-		this->teamTable->remove(tempTeam2);
+		delete tempTeam2;
 	}
 	else{
 		tempTeam2->getCaptain()->setSpiritExtra(new permutation_t((*team1Spirit) * (*bigDaddy2Extra)));
@@ -448,7 +446,7 @@ StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 		tempTeam1->getCaptain()->setTeam(tempTeam1);
 		
 		this->teamTreeById->removeValue(tempTeam2, compare_team_by_id);
-		this->teamTable->remove(tempTeam2);
+		delete tempTeam2;
 
 		this->teamTreeByAbility->insertValue(tempTeam1, compareTeamsByAbility);
 	}

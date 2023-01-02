@@ -12,6 +12,7 @@ class Player {
     int cards;
     bool goalKeeper;
 
+
     Player* daddy;
 
     bool captain;

@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "wet2util.h"
+
 class Player;
 
 
@@ -13,6 +14,7 @@ class Team {
     int teamAbility;
     int playersCount;
     bool goalKeeper;
+
     permutation_t* teamSpirit;
 
     public:
