@@ -122,39 +122,6 @@ class RankAVLTree {
         return head->height;
     }
 
-    int countInRange(Node* head, T* minValue, T* maxValue, int(*cmp_func)(T* t1, T* t2)){
-        if(head == nullptr) return 0;
-
-        int sumLeft = 0;
-        int sumRight = 0;
-        int isInRange = 0;
-
-        int minComare = cmp_func(head->value, minValue);
-        int maxCompare = cmp_func(head->value, maxValue);
-
-        if(minComare > 0) sumLeft = countInRange(head->left, minValue, maxValue, cmp_func);
-        if(minComare >= 0 && maxCompare <= 0) isInRange = 1;
-        if(maxCompare < 0) sumRight = countInRange(head->right, minValue, maxValue, cmp_func);
-
-        return sumLeft + isInRange + sumRight;
-    }
-
-    void rangedIntoArray(Node* head, T** array, int* index, T* minValue, T* maxValue, int(*cmp_func)(T* t1, T* t2)){
-        if(head == nullptr) return;
-
-        int minComare = cmp_func(head->value, minValue);
-        int maxCompare = cmp_func(head->value, maxValue);
-
-        if(minComare > 0) rangedIntoArray(head->left, array, index, minValue, maxValue, cmp_func);
-
-        if(minComare >= 0 && maxCompare <= 0)
-        {
-            array[*index] = head->value;
-            (*index)++;
-        }
-
-        if(maxCompare < 0) rangedIntoArray(head->right, array, index, minValue, maxValue, cmp_func);
-    }
 
     int height(Node* head){
         if(head == nullptr) return 0;
@@ -200,7 +167,7 @@ class RankAVLTree {
         return newHead;
     }
     
-
+    
     Node * insert(Node* head, T* value, int(*cmp_func)(T* t1, T* t2)){
         if(head == nullptr){
             Node* temp = new Node(value);
@@ -219,9 +186,12 @@ class RankAVLTree {
         head->height = max(height(head->left), height(head->right)) + 1;
 
         int balance = height(head->left) - height(head->right);
+        //int balL;
+        //int balR;
     
         if(balance > 1){
-            if(cmp_func(value, head->left->value) < 0){
+            //balL = height(head->left->left) - height(head->left->right);
+            if(height(head->left) >= height(head->right)){
                 return rotateRight(head);
             }
             else{
@@ -230,7 +200,8 @@ class RankAVLTree {
             }
         }
         else if(balance < -1){
-            if(cmp_func(value, head->right->value) > 0){
+            //balR = height(head->right->left) - height(head->right->right);
+            if(height(head->right) >= height(head->left)){
                 return rotateLeft(head);
             }
             else{
